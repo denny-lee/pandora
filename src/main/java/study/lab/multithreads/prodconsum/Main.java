@@ -1,4 +1,4 @@
-package study.lab.multitheads.prodconsum;
+package study.lab.multithreads.prodconsum;
 
 public class Main {
 
