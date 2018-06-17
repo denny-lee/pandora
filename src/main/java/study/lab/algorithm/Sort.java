@@ -12,6 +12,7 @@ public class Sort {
 //        print(arr);
         System.out.println();
         print(sort(arr, 0, arr.length - 1));
+        throw new RuntimeException();
 
     }
 
