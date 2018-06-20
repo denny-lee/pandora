@@ -3,21 +3,22 @@ package study.lab.algorithm;
 public class RubicsCube {
 
     private int[] method;
+    private int tailIndex;
 
     private Block[] cube;
 
     RubicsCube() {
         cube = new Block[]{
-                new Block(0, Color.BLACK.getValue(), Color.RED.getValue(), Color.BLUE.getValue()),
-                new Block(1, Color.BLACK.getValue(), Color.YELLOW.getValue(), Color.BLUE.getValue()),
-                new Block(2, Color.BLACK.getValue(), Color.RED.getValue(), Color.ORANGE.getValue()),
-                new Block(3, Color.BLACK.getValue(), Color.YELLOW.getValue(), Color.ORANGE.getValue()),
-                new Block(4, Color.GREEN.getValue(), Color.RED.getValue(), Color.BLUE.getValue()),
-                new Block(5, Color.GREEN.getValue(), Color.YELLOW.getValue(), Color.BLUE.getValue()),
-                new Block(6, Color.GREEN.getValue(), Color.RED.getValue(), Color.ORANGE.getValue()),
-                new Block(7, Color.GREEN.getValue(), Color.YELLOW.getValue(), Color.ORANGE.getValue()),
+                new Block(0, Color.BLUE.getValue(), Color.BLACK.getValue(), Color.RED.getValue()),
+                new Block(1, Color.BLUE.getValue(), Color.YELLOW.getValue(), Color.RED.getValue()),
+                new Block(2, Color.BLACK.getValue(), Color.GREEN.getValue(), Color.ORANGE.getValue()),
+                new Block(3, Color.BLACK.getValue(), Color.BLUE.getValue(), Color.ORANGE.getValue()),
+                new Block(4, Color.GREEN.getValue(), Color.BLACK.getValue(), Color.RED.getValue()),
+                new Block(5, Color.GREEN.getValue(), Color.YELLOW.getValue(), Color.RED.getValue()),
+                new Block(6, Color.YELLOW.getValue(), Color.GREEN.getValue(), Color.ORANGE.getValue()),
+                new Block(7, Color.YELLOW.getValue(), Color.BLUE.getValue(), Color.ORANGE.getValue()),
         };
-        method = new int[21];
+        method = new int[2];
         for (int i = 0; i<method.length; i++) {
             method[i] = -1;
         }
@@ -32,7 +33,7 @@ public class RubicsCube {
         if (test()) {
             printMethod();
         } else {
-            if (method[21] == -1) {
+            if (method[1] != -1) {
                 return;
             }
             for (int i = 0; i < 18; i++) {
@@ -40,7 +41,11 @@ public class RubicsCube {
                     continue;
                 }
                 turn(i);
+                method[tailIndex] = i;
+                tailIndex++;
                 solve(i);
+                tailIndex--;
+                method[tailIndex] = -1;
                 restore(i);
             }
         }
