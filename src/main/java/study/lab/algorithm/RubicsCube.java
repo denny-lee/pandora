@@ -11,6 +11,10 @@ public class RubicsCube {
 
     private Block[] cube;
 
+    private static final int MAX_STEP = 7;
+
+    private int count;
+
     RubicsCube() {
         cube = new Block[]{
                 new Block(0, Color.BLUE.getValue(), Color.WHITE.getValue(), Color.RED.getValue()),
@@ -26,10 +30,11 @@ public class RubicsCube {
         printStatus();
         System.out.println("------------------");
 
-        method = new int[7];
+        method = new int[MAX_STEP];
         for (int i = 0; i<method.length; i++) {
             method[i] = -1;
         }
+        count = 0;
     }
 
     public static void main(String[] args) {
@@ -43,6 +48,7 @@ public class RubicsCube {
     }
 
     private void printAnswer() {
+        System.out.println("have tried " + count + " steps! Got Answer:");
         for (String s : answers.keySet()) {
             System.out.println(s);
         }
@@ -52,7 +58,7 @@ public class RubicsCube {
         if (test()) {
             printMethod();
         } else {
-            if (method[6] != -1) {
+            if (method[MAX_STEP-1] != -1) {
                 return;
             }
             for (int i = 0; i < 18; i++) {
@@ -60,6 +66,7 @@ public class RubicsCube {
                     continue;
                 }
                 turn(i);
+                count++;
 
 //                printStatus();
                 method[tailIndex] = i;
