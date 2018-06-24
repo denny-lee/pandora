@@ -114,7 +114,7 @@ public class RubicsCube {
 
         System.out.println("   "+getLabel(cube[0].getColor()[2])+getLabel(cube[1].getColor()[2])+"   ");
         System.out.println("   "+getLabel(cube[4].getColor()[2])+getLabel(cube[5].getColor()[2])+"   ");
-        System.out.println("----------");
+//        System.out.println("----------");
     }
 
     private String getLabel(int i) {
