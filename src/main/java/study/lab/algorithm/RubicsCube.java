@@ -7,7 +7,12 @@ public class RubicsCube {
 
     private int[] method;
     private int tailIndex;
-    private Map<String, Object> answers = new LinkedHashMap<String, Object>(2, 0.75f, true);
+    private Map<String, Object> answers = new LinkedHashMap<String, Object>(1, 0.75f, true){
+        @Override
+        protected boolean removeEldestEntry(Map.Entry<String, Object> eldest) {
+            return size() > 1;
+        }
+    };
 
     private Block[] cube;
 
@@ -17,14 +22,14 @@ public class RubicsCube {
 
     RubicsCube() {
         cube = new Block[]{
-                new Block(0, Color.BLUE.getValue(), Color.WHITE.getValue(), Color.RED.getValue()),
-                new Block(1, Color.BLUE.getValue(), Color.YELLOW.getValue(), Color.RED.getValue()),
-                new Block(2, Color.WHITE.getValue(), Color.GREEN.getValue(), Color.ORANGE.getValue()),
-                new Block(3, Color.WHITE.getValue(), Color.BLUE.getValue(), Color.ORANGE.getValue()),
-                new Block(4, Color.GREEN.getValue(), Color.WHITE.getValue(), Color.RED.getValue()),
-                new Block(5, Color.GREEN.getValue(), Color.YELLOW.getValue(), Color.RED.getValue()),
-                new Block(6, Color.YELLOW.getValue(), Color.GREEN.getValue(), Color.ORANGE.getValue()),
-                new Block(7, Color.YELLOW.getValue(), Color.BLUE.getValue(), Color.ORANGE.getValue()),
+                new Block(0, Color.BLUE.getValue(), Color.RED.getValue(), Color.YELLOW.getValue()),
+                new Block(1, Color.WHITE.getValue(), Color.BLUE.getValue(), Color.RED.getValue()),
+                new Block(2, Color.RED.getValue(), Color.GREEN.getValue(), Color.WHITE.getValue()),
+                new Block(3, Color.ORANGE.getValue(), Color.BLUE.getValue(), Color.YELLOW.getValue()),
+                new Block(4, Color.ORANGE.getValue(), Color.GREEN.getValue(), Color.YELLOW.getValue()),
+                new Block(5, Color.BLUE.getValue(), Color.ORANGE.getValue(), Color.WHITE.getValue()),
+                new Block(6, Color.ORANGE.getValue(), Color.GREEN.getValue(), Color.WHITE.getValue()),
+                new Block(7, Color.RED.getValue(), Color.YELLOW.getValue(), Color.GREEN.getValue()),
         };
         System.out.println("-------init-------");
         printStatus();
@@ -359,14 +364,15 @@ public class RubicsCube {
             sb.append(",").append(M.getByValue(i).name());
         }
         String key = sb.toString().substring(1);
-        if (answers.isEmpty()) {
-            answers.put(key, 1);
-        } else {
-            for (String k : answers.keySet()) {
-                if (key.length() < k.length()) {
-                    answers.put(key, 1);
-                }
+        boolean needPut = true;
+        for (String k : answers.keySet()) {
+            if (key.length() >= k.length()) {
+                needPut = false;
+                break;
             }
+        }
+        if (needPut) {
+            answers.put(key, 1);
         }
 
     }
