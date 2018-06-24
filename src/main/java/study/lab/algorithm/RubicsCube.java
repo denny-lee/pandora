@@ -16,20 +16,20 @@ public class RubicsCube {
 
     private Block[] cube;
 
-    private static final int MAX_STEP = 7;
+    private static final int MAX_STEP = 11;
 
-    private int count;
+    private long count;
 
     RubicsCube() {
         cube = new Block[]{
-                new Block(0, Color.BLUE.getValue(), Color.RED.getValue(), Color.YELLOW.getValue()),
-                new Block(1, Color.WHITE.getValue(), Color.BLUE.getValue(), Color.RED.getValue()),
-                new Block(2, Color.RED.getValue(), Color.GREEN.getValue(), Color.WHITE.getValue()),
-                new Block(3, Color.ORANGE.getValue(), Color.BLUE.getValue(), Color.YELLOW.getValue()),
-                new Block(4, Color.ORANGE.getValue(), Color.GREEN.getValue(), Color.YELLOW.getValue()),
-                new Block(5, Color.BLUE.getValue(), Color.ORANGE.getValue(), Color.WHITE.getValue()),
-                new Block(6, Color.ORANGE.getValue(), Color.GREEN.getValue(), Color.WHITE.getValue()),
-                new Block(7, Color.RED.getValue(), Color.YELLOW.getValue(), Color.GREEN.getValue()),
+                new Block(0, Color.GREEN.getValue(), Color.ORANGE.getValue(), Color.YELLOW.getValue()),
+                new Block(1, Color.RED.getValue(), Color.YELLOW.getValue(), Color.GREEN.getValue()),
+                new Block(2, Color.RED.getValue(), Color.BLUE.getValue(), Color.YELLOW.getValue()),
+                new Block(3, Color.ORANGE.getValue(), Color.GREEN.getValue(), Color.WHITE.getValue()),
+                new Block(4, Color.WHITE.getValue(), Color.BLUE.getValue(), Color.RED.getValue()),
+                new Block(5, Color.BLUE.getValue(), Color.YELLOW.getValue(), Color.ORANGE.getValue()),
+                new Block(6, Color.ORANGE.getValue(), Color.WHITE.getValue(), Color.BLUE.getValue()),
+                new Block(7, Color.WHITE.getValue(), Color.RED.getValue(), Color.GREEN.getValue()),
         };
         System.out.println("-------init-------");
         printStatus();
@@ -39,10 +39,11 @@ public class RubicsCube {
         for (int i = 0; i<method.length; i++) {
             method[i] = -1;
         }
-        count = 0;
+        count = 0L;
     }
 
     public static void main(String[] args) {
+        long time = System.currentTimeMillis();
         RubicsCube rc = new RubicsCube();
 //        rc.turn(0);
 //        rc.turn(1);
@@ -50,6 +51,7 @@ public class RubicsCube {
 //        rc.printStatus();
         rc.solve(-1);
         rc.printAnswer();
+        System.out.println("time cost:" + String.valueOf(System.currentTimeMillis() - time));
     }
 
     private void printAnswer() {
@@ -66,8 +68,12 @@ public class RubicsCube {
             if (method[MAX_STEP-1] != -1) {
                 return;
             }
-            for (int i = 0; i < 18; i++) {
+            /*for (int i = 0; i < 18; i++) {
                 if (lastMethod == i || Math.abs(lastMethod - i)%6 == 0) {
+                    continue;
+                }*/
+            for (int i = 0; i < 9; i++) {
+                if (lastMethod == i || Math.abs(lastMethod - i)%3 == 0) {
                     continue;
                 }
                 turn(i);
@@ -115,10 +121,18 @@ public class RubicsCube {
         return Color.getByValue(i).name().substring(0, 1);
     }
 
-    private void restore(int i) {
+    /*private void restore(int i) {
         int m = i;
         if (i < 12) {
             m = i < 6 ? i + 6 : i - 6;
+        }
+        turn(m);
+    }*/
+
+    private void restore(int i) {
+        int m = i;
+        if (i < 6) {
+            m = i < 3 ? i + 3 : i - 3;
         }
         turn(m);
     }
@@ -136,7 +150,7 @@ public class RubicsCube {
             cube[3] = cube[7];
             cube[7] = cube[6];
             cube[6] = tmp;
-        } else if (i == M.D.getValue()) {
+        /*} else if (i == M.D.getValue()) {
             cube[0].turn(1);
             cube[1].turn(1);
             cube[4].turn(1);
@@ -157,7 +171,7 @@ public class RubicsCube {
             cube[0] = cube[2];
             cube[2] = cube[6];
             cube[6] = cube[4];
-            cube[4] = tmp;
+            cube[4] = tmp;*/
         } else if (i == M.R.getValue()) {
             for (int j = 0; j < 3; j++) {
                 cube[1].turn(0);
@@ -182,7 +196,7 @@ public class RubicsCube {
             cube[1] = cube[3];
             cube[3] = cube[2];
             cube[2] = tmp;
-        } else if (i == M.B.getValue()) {
+        /*} else if (i == M.B.getValue()) {
             for (int j = 0; j < 3; j++) {
                 cube[4].turn(2);
                 cube[5].turn(2);
@@ -194,7 +208,7 @@ public class RubicsCube {
             cube[4] = cube[6];
             cube[6] = cube[7];
             cube[7] = cube[5];
-            cube[5] = tmp;
+            cube[5] = tmp;*/
         } else if (i == M.U1.getValue()) {
             cube[2].turn(1);
             cube[3].turn(1);
@@ -206,7 +220,7 @@ public class RubicsCube {
             cube[6] = cube[7];
             cube[7] = cube[3];
             cube[3] = tmp;
-        } else if (i == M.D1.getValue()) {
+        /*} else if (i == M.D1.getValue()) {
             for (int j = 0; j < 3; j++) {
                 cube[0].turn(1);
                 cube[1].turn(1);
@@ -231,7 +245,7 @@ public class RubicsCube {
             cube[0] = cube[4];
             cube[4] = cube[6];
             cube[6] = cube[2];
-            cube[2] = tmp;
+            cube[2] = tmp;*/
         } else if (i == M.R1.getValue()) {
             cube[1].turn(0);
             cube[3].turn(0);
@@ -256,7 +270,7 @@ public class RubicsCube {
             cube[2] = cube[3];
             cube[3] = cube[1];
             cube[1] = tmp;
-        } else if (i == M.B1.getValue()) {
+        /*} else if (i == M.B1.getValue()) {
             cube[4].turn(2);
             cube[5].turn(2);
             cube[6].turn(2);
@@ -266,7 +280,7 @@ public class RubicsCube {
             cube[4] = cube[5];
             cube[5] = cube[7];
             cube[7] = cube[6];
-            cube[6] = tmp;
+            cube[6] = tmp;*/
         } else if (i == M.U2.getValue()) {
             for (int j = 0; j < 2; j++) {
                 cube[2].turn(1);
@@ -281,7 +295,7 @@ public class RubicsCube {
             tmp = cube[3];
             cube[3] = cube[6];
             cube[6] = tmp;
-        } else if (i == M.D2.getValue()) {
+        /*} else if (i == M.D2.getValue()) {
             for (int j = 0; j < 2; j++) {
                 cube[0].turn(1);
                 cube[1].turn(1);
@@ -308,7 +322,7 @@ public class RubicsCube {
             cube[6] = tmp;
             tmp = cube[2];
             cube[2] = cube[4];
-            cube[4] = tmp;
+            cube[4] = tmp;*/
         } else if (i == M.R2.getValue()) {
             for (int j = 0; j < 2; j++) {
                 cube[1].turn(0);
@@ -337,7 +351,7 @@ public class RubicsCube {
             tmp = cube[1];
             cube[1] = cube[2];
             cube[2] = tmp;
-        } else if (i == M.B2.getValue()) {
+        /*} else if (i == M.B2.getValue()) {
             for (int j = 0; j < 2; j++) {
                 cube[4].turn(2);
                 cube[5].turn(2);
@@ -350,7 +364,7 @@ public class RubicsCube {
             cube[7] = tmp;
             tmp = cube[5];
             cube[5] = cube[6];
-            cube[6] = tmp;
+            cube[6] = tmp;*/
         }
     }
 
@@ -461,9 +475,12 @@ public class RubicsCube {
     }
 
     enum M {
-        U(0), D(1), L(2), R(3), F(4), B(5),
+        /*U(0), D(1), L(2), R(3), F(4), B(5),
         U1(6), D1(7), L1(8), R1(9), F1(10), B1(11),
-        U2(12), D2(13), L2(14), R2(15), F2(16), B2(17);
+        U2(12), D2(13), L2(14), R2(15), F2(16), B2(17);*/
+
+        U(0), R(1), F(2), U1(3), R1(4), F1(5),
+        U2(6), R2(7), F2(8);
 
         private int value;
         M(int i) {
