@@ -7,39 +7,39 @@ import java.util.List;
 public class Interview {
 
     private static final int[] arr = new int[]{7,9,2,3,5,8,4};
+    private static final List<Integer> source = new ArrayList<Integer>();
 
     private static final int target = 8;
     private static List<List<Integer>> result = new ArrayList<List<Integer>>();
+    private static List<Integer> tempList = new ArrayList<Integer>();
 
-    public static void solve(int index, List<Integer> road) {
-        for (int i = index; i < arr.length; i++) {
-            if (index >= arr.length) {
-                return;
+    public static void solve(int index) {
+        int tempSum = sumUp();
+        if (tempSum == target) {
+            result.add(new ArrayList<Integer>(tempList));
+        } else if (tempSum < target) {
+            int i = index;
+            while (i >= 0){
+                tempList.add(i);
+                solve(i);
+                tempList.remove(tempList.size() - 1);
+                i--;
             }
-            if (arr[index] > target) {
-                return;
-            }
-            int temp = 0;
-            for (int j = 0; j < road.size(); j++) {
-                temp += arr[j];
-            }
-            if (temp + arr[index] > target) {
-                return;
-            }
-            road.add(arr[index]);
-            if (temp + arr[index] == target) {
-                result.add(new ArrayList<Integer>(road));
-            }
-            solve(index+1, road);
-            road.remove(road.size() - 1);
         }
+    }
 
+    private static int sumUp() {
+        int tempSum = 0;
+        for (Integer i : tempList) {
+            tempSum += arr[i];
+        }
+        return tempSum;
     }
 
     private static void printResult() {
         for (List<Integer> ll : result) {
             for (Integer l : ll) {
-                System.out.print(l + ",");
+                System.out.print(arr[l] + ",");
             }
             System.out.println();
         }
@@ -47,8 +47,20 @@ public class Interview {
 
     public static void main(String[] args) {
         Arrays.sort(arr);
-        List<Integer> road = new ArrayList<Integer>();
-        solve(0, road);
+        int i = 0;
+        while (i < arr.length) {
+            if (arr[i] > target) {
+                break;
+            }
+            source.add(arr[i]);
+            i++;
+        }
+        i--;
+        for (int j = i; j > 0; j--) {
+            tempList.add(j);
+            solve(j);
+            tempList.remove(tempList.size() - 1);
+        }
 
         printResult();
     }
